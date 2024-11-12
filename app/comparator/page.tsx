@@ -9,7 +9,7 @@ import { FollowersDataArray, FollowingDataArray } from "./types";
 
 
 export default function ListComparisonPage() {
-    const [peopleNotFollowingYou, setPeopleNotFollowingYou] = useState<string>('')
+    const [peopleNotFollowingYou, setPeopleNotFollowingYou] = useState<{ data: string, length: number }>(null)
     const peopleNotFollowingYouRef = useRef<HTMLTextAreaElement>(null)
     const followingRef = useRef<HTMLTextAreaElement>(null)
     const followersRef = useRef<HTMLTextAreaElement>(null)
@@ -66,7 +66,7 @@ export default function ListComparisonPage() {
 
     const handleCompareLists = () => {
         const followingNotFollowers = following.map(followed => !followers.includes(followed) ? followed : '').filter(Boolean)
-        setPeopleNotFollowingYou(followingNotFollowers.join('\n'))
+        setPeopleNotFollowingYou({ data: followingNotFollowers.join('\n'), length: followingNotFollowers.length })
     }
 
     return (
@@ -119,10 +119,10 @@ export default function ListComparisonPage() {
 
             </div>
             <div className="my-4 flex flex-col items-center">
-                <h2>MFS who dont follow you back</h2>
+                <h2>MFS who dont follow you back: {peopleNotFollowingYou?.length}</h2>
                 <textarea
                     ref={peopleNotFollowingYouRef}
-                    value={peopleNotFollowingYou}
+                    value={peopleNotFollowingYou?.data}
                     className="w-full lg:w-1/3 h-72 p-4 mb-4 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400 placeholder-gray-500"
                     disabled
                 />
